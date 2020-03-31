@@ -1,0 +1,275 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Cesium</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style/style.css">
+    <!-- Link to CesiumJS Library -->
+    <script src="https://cesium.com/downloads/cesiumjs/releases/1.66/Build/Cesium/Cesium.js"></script>
+    <link href="https://cesium.com/downloads/cesiumjs/releases/1.66/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <div class="jumbotron">
+        <h1>Global Warming</h1>
+        <!-- <img src="style/background.jpg" id="background" width="100%" height="500px"> -->
+        <img src="style/logo.png" class="img-circle" id="logo">
+
+    </div>
+
+    <div class="sidenav">
+        <a href="index.html">Home</a>
+        <button class="dropdown-btn">Causes
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-container">
+            <a href="causes.html">Human Causes</a>
+            <a href="#">Natural Causes</a>
+        </div>
+        <a href="impacts.html">Impacts</a>
+        <a href="solutions.html">Solutions</a>
+        <a href="login.html">Login</a>
+        <a href="sign-up.html">Sign Up</a>
+    </div>
+    <script>
+        /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
+        var dropdown = document.getElementsByClassName("dropdown-btn");
+        var i;
+
+        for (i = 0; i < dropdown.length; i++) {
+            dropdown[i].addEventListener("click", function () {
+                this.classList.toggle("active");
+                var dropdownContent = this.nextElementSibling;
+                if (dropdownContent.style.display === "block") {
+                    dropdownContent.style.display = "none";
+                } else {
+                    dropdownContent.style.display = "block";
+                }
+            });
+        }
+    </script>
+    <div class="main-content">
+        <style>
+            @import url(bucket.css);
+        </style>
+        <div id="cesiumContainer" class="fullSize"></div>
+        <div id="loadingOverlay">
+            <h1>Loading...</h1>
+        </div>
+        <div id="toolbar"></div>
+
+
+        <script>
+            var czml = [{
+                "id": "document",
+                "name": "CZML Position Definitions",
+                "version": "1.0"
+            }, {
+                "id": "point1",
+                "name": "Mount Etna, Italy",
+                "position": {
+                    "cartographicDegrees": [14.9759253, 37.7510032, 0.0]
+                },
+                "point": {
+                    "color": {
+                        "rgba": [100, 0, 200, 255]
+                    },
+                    "outlineColor": {
+                        "rgba": [200, 0, 200, 255]
+                    },
+                    "pixelSize": {
+                        "number": 10
+                    }
+                }
+            }, {
+                "id": "point2",
+                "name": "Cyclone Idai",
+                "position": {
+                "cartographicDegrees": [36.293046, -17.752366, 0.0]
+                },
+                "point": {
+                    "color": {
+                        "rgba": [255,153,153, 255]
+                    },
+                    "outlineColor": {
+                        "rgba": [255,153,153, 255]
+                    },
+                    "pixelSize": {
+                        "number": 10
+                    }
+                }
+            }, 
+            {
+                "id": "point 3",
+                "name": "Japan Heatwave",
+                "position": {
+                    "cartographicDegrees": [139.6007822, 35.6684415, 0.0]
+                },
+                "point": {
+                    "color": {
+                        "rgba": [255, 0, 0, 255]
+                    },
+                    "outlineColor": {
+                        "rgba": [255, 0, 0, 255]
+                    },
+                    "pixelSize": {
+                        "number": 10
+                    }
+                }
+            },
+            
+            {
+                "id": "point 4",
+                "name": "Typhoon China",
+                "position": {
+                    "cartographicDegrees": [121.479333, 31.206691, 0.0]
+                },
+                "point": {
+                    "color": {
+                        "rgba": [255,0,255, 255]
+                    },
+                    "outlineColor": {
+                        "rgba": [255,0,255, 255]
+                    },
+                    "pixelSize": {
+                        "number": 10
+                    }
+                }
+            },
+            {
+                "id": "point 5",
+                "name": "Pakistan Drought",
+                "position": {
+                    "cartographicDegrees": [63.4740474, 29.9141741, 0.0]
+                },
+                "point": {
+                    "color": {
+                        "rgba": [255,255,0, 255]
+                    },
+                    "outlineColor": {
+                        "rgba": [255,255,0, 255]
+                    },
+                    "pixelSize": {
+                        "number": 10
+                    }
+                }
+            },
+            {
+                "id": "point 6",
+                "name": "India Floods",
+                "position": {
+                    "cartographicDegrees": [74.0742941, 15.0115709, 0.0]
+                },
+                "point": {
+                    "color": {
+                        "rgba": [51,255,255, 255]
+                    },
+                    "outlineColor": {
+                        "rgba": [51,255,255, 255]
+                    },
+                    "pixelSize": {
+                        "number": 10
+                    }
+                }
+            },
+            {
+                "id": "point 7",
+                "name": "USA Hurricane Dorian",
+                "position": {
+                    "cartographicDegrees": [-81.4041825, 32.235576, 0.0]
+                },
+                "point": {
+                    "color": {
+                        "rgba": [204,51,255, 255]
+                    },
+                    "outlineColor": {
+                        "rgba": [204,51,255, 255]
+                    },
+                    "pixelSize": {
+                        "number": 10
+                    }
+                }
+            },
+            {
+                "id": "point 8",
+                "name": "USA Blizzard",
+                "position": {
+                    "cartographicDegrees": [-109.9015134, 43.388595, 0.0]
+                },
+                "point": {
+                    "color": {
+                        "rgba": [153,0,102, 255]
+                    },
+                    "outlineColor": {
+                        "rgba": [153,0,102, 255]
+                    },
+                    "pixelSize": {
+                        "number": 10
+                    }
+                }
+            },
+            {
+                "id": "point 9",
+                "name": "Arctic Ice Melting",
+                "position": {
+                    "cartographicDegrees": [51.5930221, 80.6154498, 0.0]
+                },
+                "point": {
+                    "color": {
+                        "rgba": [153,255,0, 255]
+                    },
+                    "outlineColor": {
+                        "rgba": [153,255,0, 255]
+                    },
+                    "pixelSize": {
+                        "number": 10
+                    }
+                }
+            },
+            {
+                "id": "point 10",
+                "name": "Australia Wildfire",
+                "position": {
+                    "cartographicDegrees": [115.1841451, -24.9870572, 0.0]
+                },
+                "point": {
+                    "color": {
+                        "rgba": [255,102,51, 255]
+                    },
+                    "outlineColor": {
+                        "rgba": [255,102,51, 255]
+                    },
+                    "pixelSize": {
+                        "number": 10
+                    }
+                }
+            }];
+            var viewer = new Cesium.Viewer('cesiumContainer');
+            viewer.dataSources.add(Cesium.CzmlDataSource.load(czml));
+        </script>
+    </div>
+    <footer>
+        <div class="row">
+            <div class="column">
+                <br>
+                <?php echo date('d-m-Y'); ?> <h3>Created by Dr Coulman &copy;</h3>
+            </div>
+            <div class="column">
+                <a href="https://www.facebook.com/WWF/" class="fa fa-facebook"></a>
+                <a href="https://twitter.com/Greenpeace" class="fa fa-twitter"></a>
+                <a href="https://www.youtube.com/user/NationalGeographic" class="fa fa-youtube"></a>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

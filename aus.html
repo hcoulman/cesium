@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Cesium</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style/style.css">
+    <!-- Link to CesiumJS Library -->
+    <script src="https://cesium.com/downloads/cesiumjs/releases/1.66/Build/Cesium/Cesium.js"></script>
+    <link href="https://cesium.com/downloads/cesiumjs/releases/1.66/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+
+    <style>
+        @import url(data/bucket.css);
+    </style>
+</head>
+
+<body>
+    <style>
+        @import url(../templates/bucket.css);
+    </style>
+    <div id="cesiumContainer" class="fullSize"></div>
+    <div id="loadingOverlay"><h1>Loading...</h1></div>
+    <div id="toolbar-left">
+    </div>
+    <script>
+        var viewer = new Cesium.Viewer('cesiumContainer');
+//Seed the random number generator for repeatable results.
+Cesium.Math.setRandomNumberSeed(0);
+
+var promise = Cesium.KmlDataSource.load('data/Australia_Polygon.kml');
+promise.then(function(dataSource) {
+    viewer.dataSources.add(dataSource);
+
+    //Get the array of entities
+    var entities = dataSource.entities.values;
+
+    var colorHash = {};
+    for (var i = 0; i < entities.length; i++) {
+        //For each entity, create a random color based on the state name.
+        //Some states have multiple entities, so we store the color in a
+        //hash so that we use the same color for the entire state.
+        var entity = entities[i];
+        var locname = entity.locname;
+        var color = colorHash[locname];
+        if (!color) {
+            color = Cesium.Color.fromRandom({
+                alpha : 1.0
+            });
+            colorHash[locname] = color;
+        }
+
+        //Set the polygon material to our random color.
+        entity.polygon.material = color;
+        //Remove the outlines.
+        entity.polygon.outline = false;
+
+        //Extrude the polygon based on the state's population.  Each entity
+        //stores the properties for the GeoJSON feature it was created from
+        //Since the population is a huge number, we divide by 50.
+        entity.polygon.extrudedHeight = entity.properties.Population / 50.0;
+    }
+}).otherwise(function(error){
+    //Display any errrors encountered while loading.
+    window.alert(error);
+});
+    </script>
+       
+
+</body>
+
+</html>

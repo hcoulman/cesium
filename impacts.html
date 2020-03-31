@@ -1,0 +1,422 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Cesium</title>
+  <title>Travel Blog</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="style/style.css">
+  <script src="events.js"></script>
+  <!-- Link to CesiumJS Library -->
+  <script src="https://cesium.com/downloads/cesiumjs/releases/1.66/Build/Cesium/Cesium.js"></script>
+  <link href="https://cesium.com/downloads/cesiumjs/releases/1.66/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+  <script>
+    $(document).ready(function () {
+      $("#before").click(function () {
+        $("#after").animate({
+          width: 'toggle'
+        });
+      });
+    });
+  </script>
+  <script>
+    // Call & init
+    $(document).ready(function () {
+      $('.ba-slider').each(function () {
+        var cur = $(this);
+        // Adjust the slider
+        var width = cur.width() + 'px';
+        cur.find('.resize img').css('width', width);
+        // Bind dragging events
+        drags(cur.find('.handle'), cur.find('.resize'), cur);
+      });
+    });
+
+    // Update sliders on resize. 
+    // Because we all do this: i.imgur.com/YkbaV.gif
+    $(window).resize(function () {
+      $('.ba-slider').each(function () {
+        var cur = $(this);
+        var width = cur.width() + 'px';
+        cur.find('.resize img').css('width', width);
+      });
+    });
+
+    function drags(dragElement, resizeElement, container) {
+
+      // Initialize the dragging event on mousedown.
+      dragElement.on('mousedown touchstart', function (e) {
+
+        dragElement.addClass('draggable');
+        resizeElement.addClass('resizable');
+
+        // Check if it's a mouse or touch event and pass along the correct value
+        var startX = (e.pageX) ? e.pageX : e.originalEvent.touches[0].pageX;
+
+        // Get the initial position
+        var dragWidth = dragElement.outerWidth(),
+          posX = dragElement.offset().left + dragWidth - startX,
+          containerOffset = container.offset().left,
+          containerWidth = container.outerWidth();
+
+        // Set limits
+        minLeft = containerOffset + 10;
+        maxLeft = containerOffset + containerWidth - dragWidth - 10;
+
+        // Calculate the dragging distance on mousemove.
+        dragElement.parents().on("mousemove touchmove", function (e) {
+
+          // Check if it's a mouse or touch event and pass along the correct value
+          var moveX = (e.pageX) ? e.pageX : e.originalEvent.touches[0].pageX;
+
+          leftValue = moveX + posX - dragWidth;
+
+          // Prevent going off limits
+          if (leftValue < minLeft) {
+            leftValue = minLeft;
+          } else if (leftValue > maxLeft) {
+            leftValue = maxLeft;
+          }
+
+          // Translate the handle's left value to masked divs width.
+          widthValue = (leftValue + dragWidth / 2 - containerOffset) * 100 / containerWidth + '%';
+
+          // Set the new values for the slider and the handle. 
+          // Bind mouseup events to stop dragging.
+          $('.draggable').css('left', widthValue).on('mouseup touchend touchcancel', function () {
+            $(this).removeClass('draggable');
+            resizeElement.removeClass('resizable');
+          });
+          $('.resizable').css('width', widthValue);
+        }).on('mouseup touchend touchcancel', function () {
+          dragElement.removeClass('draggable');
+          resizeElement.removeClass('resizable');
+        });
+        e.preventDefault();
+      }).on('mouseup touchend touchcancel', function (e) {
+        dragElement.removeClass('draggable');
+        resizeElement.removeClass('resizable');
+      });
+    }
+  </script>
+  <style>
+
+  </style>
+</head>
+
+<body>
+
+  <div class="jumbotron">
+    <h1>Global Warming</h1>
+    <!-- <img src="style/background.jpg" id="background" width="100%" height="500px"> -->
+    <img src="style/logo.png" class="img-circle" id="logo">
+
+  </div>
+
+  <div class="sidenav">
+    <a href="index.html">Home</a>
+    <button class="dropdown-btn">Causes
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-container">
+      <a href="causes.html">Human Causes</a>
+      <a href="#">Natural Causes</a>
+    </div>
+    <a href="impacts.html">Impacts</a>
+    <a href="solutions.html">Solutions</a>
+    <a href="login.html">Login</a>
+    <a href="sign-up.html">Sign Up</a>
+  </div>
+  <script>
+    /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
+    var dropdown = document.getElementsByClassName("dropdown-btn");
+    var i;
+
+    for (i = 0; i < dropdown.length; i++) {
+      dropdown[i].addEventListener("click", function () {
+        this.classList.toggle("active");
+        var dropdownContent = this.nextElementSibling;
+        if (dropdownContent.style.display === "block") {
+          dropdownContent.style.display = "none";
+        } else {
+          dropdownContent.style.display = "block";
+        }
+      });
+    }
+  </script>
+  <div class="main-content">
+    <div class="row">
+      <h2>Global Impacts of Climate Change</h2>
+      <div class="column-left">
+        <p id="txt_intro">
+          Worst 10 extreme weather events that occurred within 2019.
+        </p>
+        <div class="container">
+          <div class="dropdown" style="width: 250px;">
+            <button class="btn dropdown-toggle" type="button" style="width: 250px; background-color: rgb(92, 77, 224);"
+              data-toggle="dropdown">2019 Extreme Weather
+              <span class="caret"></span></button>
+            <ul class="dropdown-menu" style="width: 100%; text-align: center;">
+              <li><a class="dropdown-item" id="btn_drought" href="#">Pakistan Drought</a></li>
+              <li class="divider"></li>
+              <li><a class="dropdown-item" id="btn_blizzard" onclick="blizzard()">USA Blizzard</a></li>
+              <script>
+                $("#btn_blizzard").click(function () {
+                  $("#cesium").hide();
+                  $("#txt_intro").hide();
+                  $("#iframe_idai").show();
+                  $("#txt_idai").show();
+                });
+              </script>
+              <li class="divider"></li>
+              <li><a class="dropdown-item" id="btn_idai">Cyclone</a></li>
+              <script>
+                $("#btn_idai").click(function () {
+                  $("#cesium").hide();
+                  $("#txt_intro").hide();
+                  $("#cesium_flood").show();
+                  $("#txt_idai").show();
+                });
+              </script>
+              <li class="divider"></li>
+              <li><a class="dropdown-item" id="btn_melting" onclick="melting()">Arctic Ice Melting</a></li>
+              <script>
+                $("#btn_melting").click(function () {
+                  $("#cesium").hide();
+                  $("#txt_intro").hide();
+                  $("iframe").show();
+                  $("#txt_mount").show();
+                });
+              </script>
+              <li class="divider"></li>
+              <li><a class="dropdown-item" id="btn_mount">Mount Etna Eruption</a></li>
+              <script>
+                $("#btn_mount").click(function () {
+                  $("#cesium").hide();
+                  $("#txt_intro").hide();
+                  $("iframe").show();
+                  $("#txt_mount").show();
+                });
+              </script>
+              <li class="divider"></li>
+              <li><a class="dropdown-item" id="btn_flood" onclick="flood()">India Flooding</a></li>
+              <script>
+                $("#btn_flood").click(function () {
+                  $("#cesium").show();
+                  $("#cesium_flood").show();
+                  $("#cesium_pins").hide();
+                  $("#cesium_hurricane").hide();
+                  $("#txt_intro").hide();
+                  $("#txt_hurricane").hide();
+                });
+              </script>
+              <li class="divider"></li>
+              <!-- https://sandcastle.cesium.com/?src=Camera.html&label=All -->
+              <li><a role="menuitem" tabindex="-1" href="#">Typhoon China</a></li>
+              <li class="divider"></li>
+              <li><a class="dropdown-item" id="btn_heat">Japan Heatwave</a></li>
+              <script>
+                $("#btn_heat").click(function () {
+                  $("#cesium").hide();
+                  $("#txt_intro").hide();
+                  $("#txt_heat").show();
+                  $("#iframe_heat").show();
+                });
+              </script>
+              <li class="divider"></li>
+              <li><a class="dropdown-item" id="btn_hurricane" onclick="hurricane()">Hurricane Dorian</a></li>
+              <script>
+                $("#btn_hurricane").click(function () {
+                  $("#cesium").show();
+                  $("#cesium_pins").hide();
+                  $("#txt_intro").hide();
+                  $("#txt_hurricane").show();
+                });
+              </script><li class="divider"></li>
+              <li><a class="dropdown-item" id="btn_heat" onclick="heat()">Wildfires</a></li>
+              <script>
+                $("#btn_heat").click(function () {
+                  $("#cesium").show();
+                  $("#cesium_pins").hide();
+                  $("#txt_intro").hide();
+                  $("#cesium_heat").show();
+                });
+              </script>
+              <li class="divider"></li>
+              <li><a class="dropdown-item" id="btn_heat" onclick="heat()">japan heat</a></li>
+              <script>
+                $("#btn_heat").click(function () {
+                  $("#cesium").show();
+                  $("#cesium_pins").hide();
+                  $("#txt_intro").hide();
+                  $("#cesium_heat").show();
+                });
+              </script>
+            </ul>
+          </div><br>
+        </div>
+        <script>
+          $(document).ready(function () {
+            $(".dropdown-toggle").dropdown();
+          });
+          $(document).ready(function () {
+            $(".dropdown").on("hide.bs.dropdown", function () {
+              $(".btn").html('2019 Extreme Weather <span class="caret"></span>');
+            });
+            $(".dropdown").on("show.bs.dropdown", function () {
+              $(".btn").html('2019 Extreme Weather <span class="caret caret-up"></span>');
+            });
+          });
+          // hide all maps and text
+          $(document).ready(function () {
+            $("#cesium_flood").hide();
+            $("#iframe_mount").hide();
+            $("#txt_mount").hide();
+            $("#iframe_idai").hide();
+            $("#iframe_heat").hide();
+            $("#txt_idai").hide();
+            $("#txt_hurricane").hide();
+            $("#txt_flood").hide();
+          });
+        </script>
+        <p id="txt_mount">
+          Etna is considered to be, on the long-term average, the major atmospheric point source of many environmental
+          harmful compounds.
+          Approximately 3,000 people living on the slopes of the mountain died from asphyxiation. Even worse, Etna was
+          soon emitting tremendous amounts of ash and molten lava. The ash was sent out with such force that significant
+          amounts came down in the southern part of mainland Italy, in some cases nearly 100 miles away.
+          <br>
+          Older activity
+          <br>
+          Such patchwork of colors on the map represent the signs of a broad diversity of eruptive events that happened
+          throughout the years.
+          Igneous rocks, intrusions, dikes… A true paradise for amateur geologists!
+        </p>
+        <p id="txt_idai">
+          Cyclone IDAI killed more than 1000 people across Zimbabwe, Malawi, Mozambique, and it affected millions more
+          who were left destitute without food or basic services.
+          Only six weeks later Cyclone Kenneth arrived, sweeping through northern Mozambique.
+        </p>
+        <p id="txt_hurricane">
+          hurricane
+        </p>
+        <p id="txt_flood">
+          flood
+        </p>
+        <p id="txt_heat">
+          heat
+        </p>
+        <p id="txt_blizzard">
+          (insert polyline for wind direction) 
+        </p>
+      </div>
+      <div class="column-right">
+        <div id="cesium">
+          <div id="cesium_pins" class="fullSize"></div>
+          <div id="toolbar"></div>
+          <!-- <div id="loadingOverlay"> -->
+          <!-- <h1>Loading...</h1> -->
+          <!-- </div> -->
+
+          <div id="cesium_hurricane" class="fullSize"></div>
+          <div id="toolbar"></div>
+
+          <div id="cesium_heat" class="fullSize"></div>
+          <div id="toolbar"></div>
+
+           <div id="cesium_blizzard" class="fullSize"></div>
+          <div id="toolbar"></div>
+
+          <div id="cesium_flood"></div>
+          <div id="loadingOverlay">
+            <h1>Loading...</h1>
+          </div>
+          <div id="toolbar">
+            <button onclick="alert('You clicked!');">Click me!</button>
+          </div>
+          <video id="trailer" muted="" autoplay="" loop="" crossorigin="" controls="">
+            <source src="bangladesh_flood.webm" type="video/webm">
+            <source src="bangladesh_flood.mp4" type="video/mp4">
+            <source src="bangladesh_flood.mov" type="video/quicktime">
+            Your browser does not support the <code>video</code> element.
+          </video>          
+        </div>
+      </div>
+      <br>
+      <script>
+        blizzard();
+      </script>
+      <div id="iframe_mount">
+        <iframe title="Mount Etna" width="100%" height="576"
+          src="https://cesium.com/ion/stories/viewer/?id=a403f9d6-ae50-4075-b620-4bb1afd815ac" frameborder="0"
+          allow="fullscreen" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+      </div>
+      <div id="iframe_idai">
+        <iframe title="Cyclone Idai" width="100%" height="576"
+          src="https://cesium.com/ion/stories/viewer/?id=49d6f9e3-6a4e-4a49-af1c-32e9140652e0" frameborder="0"
+          allow="fullscreen" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+      </div>
+      <div id="iframe_heat">
+        <iframe title="Japan" width="100%" height="576" src="https://cesium.com/ion/stories/viewer/?id=0fd40000-047b-41e7-b981-c7571b04b6aa" frameborder="0"
+        allow="fullscreen" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+      </div>
+    </div>
+  </div>
+
+
+  </div>
+  <!-- <div class="row">
+          <div class="column">
+            <h3>Europe's Annual Temperatures 2001</h3>
+            <iframe title="Europe's Annual Temperatures 2001" aria-label="Europe choropleth map" id="datawrapper-chart-4zrUF" color="white" src="//datawrapper.dwcdn.net/4zrUF/1/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="400"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",function(a){if(void 0!==a.data["datawrapper-height"])for(var e in a.data["datawrapper-height"]){var t=document.getElementById("datawrapper-chart-"+e)||document.querySelector("iframe[src*='"+e+"']");t&&(t.style.height=a.data["datawrapper-height"][e]+"px")}})}();
+            </script>
+          </div>
+          <div class="column">
+            
+            <h3>Europe's Annual Temperatures 2019</h3>
+            <iframe title="Europe's Annual Temperatures 2001" aria-label="Europe choropleth map" id="datawrapper-chart-4zrUF" color="white" src="//datawrapper.dwcdn.net/4zrUF/1/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="400"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",function(a){if(void 0!==a.data["datawrapper-height"])for(var e in a.data["datawrapper-height"]){var t=document.getElementById("datawrapper-chart-"+e)||document.querySelector("iframe[src*='"+e+"']");t&&(t.style.height=a.data["datawrapper-height"][e]+"px")}})}();
+            </script>
+          </div>
+        </div> -->
+  <!--    <div class="row">
+          <div class="column">
+            <div class="ba-slider">
+              <img src="before.jpg" alt="">       
+              <div class="resize">
+                <img src="after.jpg" alt="">
+              </div>
+              <span class="handle"></span>
+            </div>
+          </div>
+          <div class="column">
+            <h1>Hurricane Katrina</h1>
+            <p>
+              It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+
+
+            </p>
+          </div>
+    
+    </div> -->
+  <footer>
+    <div class="row">
+      <div class="column">
+        <br>
+        <?php echo date('d-m-Y'); ?> <h3>Created by Dr Coulman &copy;</h3>
+      </div>
+      <div class="column">
+        <a href="https://www.facebook.com/WWF/" class="fa fa-facebook"></a>
+        <a href="https://twitter.com/Greenpeace" class="fa fa-twitter"></a>
+        <a href="https://www.youtube.com/user/NationalGeographic" class="fa fa-youtube"></a>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>

@@ -1,0 +1,124 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Cesium</title>
+        <title>Travel Blog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="style/style.css">
+        <!-- Link to CesiumJS Library -->
+    <script src="https://cesium.com/downloads/cesiumjs/releases/1.66/Build/Cesium/Cesium.js"></script>
+    <link href="https://cesium.com/downloads/cesiumjs/releases/1.66/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <div class="jumbotron">
+		<h1>Global Warming</h1>
+        <!-- <img src="style/background.jpg" id="background" width="100%" height="500px"> -->
+			<img src="style/logo.png" class="img-circle" id="logo">    
+			
+	</div>
+          
+<div class="sidenav">
+    <a href="index.html">Home</a>
+    <button class="dropdown-btn">Causes 
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-container">
+      <a href="causes.html">Human Causes</a>
+      <a href="#">Natural Causes</a>
+    </div>
+    <a href="impacts.html">Impacts</a>
+    <a href="solutions.html">Solutions</a>
+    <a href="login.html">Login</a>
+    <a href="sign-up.html">Sign Up</a>
+  </div>
+  <script>
+    /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
+    var dropdown = document.getElementsByClassName("dropdown-btn");
+    var i;
+    
+    for (i = 0; i < dropdown.length; i++) {
+      dropdown[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      var dropdownContent = this.nextElementSibling;
+      if (dropdownContent.style.display === "block") {
+      dropdownContent.style.display = "none";
+      } else {
+      dropdownContent.style.display = "block";
+      }
+      });
+    }
+    </script>
+      <div class="main-content">
+        <style>
+            @import url(../templates/bucket.css);
+            </style>
+            <div id="cesiumContainer" class="fullSize"></div>
+            <div id="loadingOverlay"><h1>Loading...</h1></div>
+            <div id="toolbar"></div>
+
+            <script>
+                var czml = [{
+                "id" : "document",
+                "name" : "CZML Point - Time Dynamic",
+                "version" : "1.0"
+            }, {
+                "id" : "point",
+                "availability" :"2012-08-04T16:00:00Z/2012-08-04T16:05:00Z",
+                "position" : {
+                    "epoch" : "2012-08-04T16:00:00Z",
+                    "cartographicDegrees" : [
+                        0,   -70, 20, 150000,
+                        100, -80, 44, 150000,
+                        200, -90, 18, 150000,
+                        300, -98, 52, 150000
+                    ]
+                },
+                "point" : {
+                    "color" : {
+                        "rgba" : [255, 255, 255, 128]
+                    },
+                    "outlineColor" : {
+                        "rgba" : [255, 0, 0, 128]
+                    },
+                    "outlineWidth" : 3,
+                    "pixelSize" : 15
+                }
+            }];
+
+            var viewer = new Cesium.Viewer('cesiumContainer', {
+                shouldAnimate : true
+            });
+
+            viewer.dataSources.add(Cesium.CzmlDataSource.load(czml));
+
+
+                </script>
+
+    </div>
+</div>
+<footer>
+    <div class="row">
+        <div class="column">
+            <br>
+            <?php echo date('d-m-Y'); ?> <h3>Created by Dr Coulman &copy;</h3>
+        </div>
+        <div class="column">
+                <a href="https://www.facebook.com/WWF/" class="fa fa-facebook"></a>
+                <a href="https://twitter.com/Greenpeace" class="fa fa-twitter"></a>
+                <a href="https://www.youtube.com/user/NationalGeographic" class="fa fa-youtube"></a>
+        </div>
+    </div>
+  </footer>
+</body>
+
+</html>

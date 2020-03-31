@@ -1,0 +1,151 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Cesium</title>
+        <title>Travel Blog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="style/style.css">
+        <!-- Link to CesiumJS Library -->
+    <script src="https://cesium.com/downloads/cesiumjs/releases/1.66/Build/Cesium/Cesium.js"></script>
+    <link href="https://cesium.com/downloads/cesiumjs/releases/1.66/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+    <!-- link to quiz java code -->
+    <script src="quiz.js"></script>
+    <script>
+        $(document).ready(function () {
+          $("#start-quiz").hide();
+        $("#start").click(function () {
+            $("#start-quiz").show();
+            
+          $("#table").hide();
+          });
+          $("#submit").click(function () {
+            $("#table").show();
+          });
+        });
+    </script>
+
+</head>
+
+<body>
+
+    <div class="jumbotron">
+		<h1>Global Warming</h1>
+        <!-- <img src="style/background.jpg" id="background" width="100%" height="500px"> -->
+			<img src="style/logo.png" class="img-circle" id="logo">    
+			
+	</div>
+          
+<div class="sidenav">
+    <a href="index.html">Home</a>
+    <button class="dropdown-btn">Causes 
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-container">
+      <a href="#">Human Causes</a>
+      <a href="#">Natural Causes</a>
+    </div>
+    <a href="impacts.html">Impacts</a>
+    <a href="solutions.html">Solutions</a>
+    <a href="login.html">Login</a>
+    <a href="sign-up.html">Sign Up</a>
+  </div>
+  <script>
+    /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
+    var dropdown = document.getElementsByClassName("dropdown-btn");
+    var i;
+    
+    for (i = 0; i < dropdown.length; i++) {
+      dropdown[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      var dropdownContent = this.nextElementSibling;
+      if (dropdownContent.style.display === "block") {
+      dropdownContent.style.display = "none";
+      } else {
+      dropdownContent.style.display = "block";
+      }
+      });
+    }
+    </script>
+<div class="main-content">
+    <h2>Human Causes of Climate Change</h2>
+        
+    <div class="row">
+        <div class="column">
+            <p>
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+            </p>
+        </div>
+        <div class="column">
+            <img src="style/meta-chart.png" alt="GGE pie chart" style="height: 400px;">
+        </div>
+      </div>
+    
+    <div class="row">
+      <div class="column">
+        <div class="iframe">
+          <iframe title="Global Carbon Dioxide Emissions" aria-label="Interactive area chart" id="datawrapper-chart-FxWLf" src="//datawrapper.dwcdn.net/FxWLf/1/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="400"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",function(a){if(void 0!==a.data["datawrapper-height"])for(var e in a.data["datawrapper-height"]){var t=document.getElementById("datawrapper-chart-"+e)||document.querySelector("iframe[src*='"+e+"']");t&&(t.style.height=a.data["datawrapper-height"][e]+"px")}})}();
+          </script>
+        </div>
+      </div>
+      <div class="column">
+          <p> 
+            Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
+          </p>
+      </div>
+    </div> 
+      <div class="row">
+        <div class="column">
+        <button onclick="quiz()" id="start">Take the Quiz</button>
+        <div id="start-quiz">
+          <h1>How environmentally friendly are you?</h1>
+          <div class="quiz-container">
+          <div id="quiz"></div>
+          </div>
+          <button id="previous">Previous Question</button>
+          <button id="next">Next Question</button>
+          <button id="submit">Submit Answers</button>
+          <div id="results"></div>
+          <div id="table">
+              <h2>Eco-Friendly Score</h2>
+
+          <table>
+          <tr>
+              <th>Score</th>
+              <th>Status</th>
+          </tr>
+          <tr>
+              <td>0-4</td>
+              <td>Need to educate yourself</td>
+          </tr>
+          <tr>
+              <td>5-8</td>
+              <td>On track</td>
+          </tr>
+          <tr>
+              <td>9-10</td>
+              <td>Very Eco-Friendly</td>
+          </tr>
+          </table>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+   
+
+
+    </div>
+</div>
+<footer>
+    <?php echo date('d-m-Y'); ?> <h3>Created by Dr Coulman &copy;</h3>
+ </footer>
+</body>
+
+</html>
